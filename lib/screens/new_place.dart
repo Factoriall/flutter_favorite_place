@@ -14,6 +14,10 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
 
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (!context.mounted) {
+        return;
+      }
       Navigator.of(context).pop(PlaceItem(name: _enteredName));
     }
   }
@@ -31,10 +35,10 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
           child: Column(
             children: [
               TextFormField(
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
                 maxLength: 50,
-                decoration: const InputDecoration(
-                  label: Text("Title"),
-                ),
+                decoration: const InputDecoration(label: Text("Title")),
+                initialValue: _enteredName,
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||

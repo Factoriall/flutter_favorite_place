@@ -1,5 +1,6 @@
 import 'package:favorite_place/models/place_item.dart';
 import 'package:favorite_place/screens/new_place.dart';
+import 'package:favorite_place/screens/place_detail.dart';
 import 'package:flutter/material.dart';
 
 class PlaceListScreen extends StatefulWidget {
@@ -10,12 +11,30 @@ class PlaceListScreen extends StatefulWidget {
 }
 
 class _PlaceListScreenState extends State<PlaceListScreen> {
-  final List<PlaceItem> placeItems = [];
+  final List<PlaceItem> _placeItems = [];
 
-  void _addItem() {
-    Navigator.of(context).push(
+  void _addItem() async {
+    final newItem = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const NewPlaceScreen(),
+      ),
+    );
+
+    if (newItem == null) {
+      return;
+    }
+
+    setState(() {
+      _placeItems.add(newItem);
+    });
+  }
+
+  void moveToDetailScreen(PlaceItem item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => PlaceDetailScreen(
+          item: item,
+        ),
       ),
     );
   }
@@ -23,7 +42,7 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (placeItems.isEmpty) {
+    if (_placeItems.isEmpty) {
       content = const Center(
         child: Text(
           "No data",
@@ -35,14 +54,30 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
       );
     } else {
       content = ListView.builder(
-        itemCount: placeItems.length,
+        itemCount: _placeItems.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(placeItems[index].name),
+          return InkWell(
+            onTap: () {
+              moveToDetailScreen(_placeItems[index]);
+            },
+            child: Container(
+              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  _placeItems[index].name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.amber),
+                ),
+              ),
+            ),
           );
         },
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Place"),
