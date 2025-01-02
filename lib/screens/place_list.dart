@@ -79,16 +79,15 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Your Place"),
-        actions: [
-          IconButton(
-            onPressed: _addItem,
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: content,
-    );
+        appBar: AppBar(
+          title: const Text("Your Place"),
+          actions: [
+            IconButton(
+              onPressed: _addItem,
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: content);
   }
 }
