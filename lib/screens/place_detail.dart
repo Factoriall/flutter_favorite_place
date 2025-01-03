@@ -1,10 +1,10 @@
-import 'package:favorite_place/models/place_item.dart';
+import 'package:favorite_place/models/place.dart';
 import 'package:flutter/material.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key, required this.item});
 
-  final PlaceItem item;
+  final Place item;
 
   @override
   Widget build(BuildContext context) {

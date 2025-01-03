@@ -1,24 +1,29 @@
-import 'package:favorite_place/models/place_item.dart';
+import 'package:favorite_place/models/place.dart';
+import 'package:favorite_place/providers/places_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewPlaceScreen extends StatefulWidget {
+class NewPlaceScreen extends ConsumerStatefulWidget {
   const NewPlaceScreen({super.key});
 
   @override
-  State<NewPlaceScreen> createState() => _NewPlaceScreenState();
+  ConsumerState<NewPlaceScreen> createState() => _NewPlaceScreenState();
 }
 
-class _NewPlaceScreenState extends State<NewPlaceScreen> {
+class _NewPlaceScreenState extends ConsumerState<NewPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
 
-  void _saveItem() async {
+  void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if (!context.mounted) {
         return;
       }
-      Navigator.of(context).pop(PlaceItem(name: _enteredName));
+
+      ref.read(placesProvider.notifier).addPlace(_enteredName);
+
+      Navigator.of(context).pop();
     }
   }
 
